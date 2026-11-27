@@ -8,12 +8,11 @@
 
 ## Team
 
-Add each registered team member, roll number, and GitHub account before submission.
 
 | Name | Roll Number | Work Description |
 |---|---|---|
-| [Student 1 Name] | [25F-XXXX] | Modules and testing |
-| [Student 2 Name] | [25F-XXXX] | Modules and testing |
+| M.huzaifa | | 25F-6036 | Modules and testing |
+| Rahim Nasir | 25F-3087 | Modules and testing |
 
 The team is limited to 2 members. GitHub commit history must be preserved by each member.
 
@@ -24,10 +23,7 @@ Open a terminal in this project folder and compile with:
 ```text
 g++ main.cpp heist.cpp -o heist.exe
 ```
-
-Run the executable:
-
-```text
+Then run:
 heist.exe
 ```
 
@@ -45,7 +41,7 @@ The project can also be added to a Visual Studio C++ console project with `main.
 - `about.txt` stores the project and team description.
 - `leader/scoreBoard.txt` stores completed games.
 
-Keep all text files in the same folder as the executable.
+Keep all text files in the same folder.
 
 ## Implemented Features
 
@@ -71,7 +67,7 @@ Before submission:
 
 ## Known Limitations
 
-- The interface is a Windows-style console interface.
+- The interface is a terminal based interface.
 - Screen clearing depends on `system("cls")`.
 - The score board is plain text rather than a database.
-- All file locations are relative to the executable folder.
+- All file locations are relative to the executable folder
