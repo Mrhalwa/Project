@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
+
+// making enums based on the data given in the manual with the game rules and the data files provided in the project folder
 enum GameState
 {
     Menu,
@@ -29,10 +31,16 @@ enum WordRow
     WORD_ONE = 1,
     WORD_TWO = 2
 };
+
+// constants for the game
+
 const int WORD_ONE_LENGTH = 7;
 const int WORD_TWO_LENGTH = 8;
 const int NAME_SIZE = 40;
 const int MESSAGE_SIZE = 100;
+
+// data structures for the game
+// Tile structure to represent a letter tile on the board
 struct Tile
 {
     char tileLetter;
@@ -42,6 +50,7 @@ struct Tile
     int position;
     Tile() : tileLetter(' '), filled(false), letter('_'), word(0), position(0) {}
 };
+// Clue structure to represent a clue collected by the detective
 struct Clue
 {
     char clueLetter;
@@ -57,6 +66,9 @@ struct Clue
         : clueLetter(let), cluePosition(pos), clueRow(row),
           letter(let), word(row == Word_1 ? 1 : 2), position(pos) {}
 };
+
+// Location structure to represent a location in the game
+
 struct Location
 {
     string locName;
@@ -79,12 +91,18 @@ struct Location
 Clue makeClue(char letter, int word, int position);
 Location makeLocation(const char *name, char letter, int word, int position);
 ostream &operator<<(ostream &out, const Clue &clue);
+
+// Exception classes for error handling
+
 struct LocationRecord
 {
     string placeName;
     int boardPos;
     char letters[7];
 };
+
+// CharacterRecord structure to represent a character in the game
+
 struct CharacterRecord
 {
     string name;
@@ -93,17 +111,26 @@ struct CharacterRecord
     int boardPos;
     char letters[7];
 };
+
+// ClueRecord structure to represent a clue associated with a character
+
 struct ClueRecord
 {
     string culpritRole;
     string word1;
     string word2;
 };
+
+//Other functions required for the game engine
+
 int stringLength(const char *text);
 void copyString(char *destination, const char *source, int maxSize);
 char toUpperCase(char c);
 bool isLetter(char c);
 bool sameTextIgnoreCase(const char *a, const char *b);
+
+// Exception classes for error handling
+
 class GameException
 {
 protected:
@@ -119,6 +146,9 @@ public:
     virtual bool isFatal() const;
     static void setPenalties(int turnAmount, int wordAmount);
 };
+
+// Derived exception classes for specific error types
+
 class InvalidWordException : public GameException
 {
 public:
@@ -167,6 +197,9 @@ class IncompleteWordException : public GameException
 public:
     IncompleteWordException(const char *text = "Word is incomplete!");
 };
+
+// Character classes for the game
+
 class Character
 {
 protected:
@@ -197,6 +230,9 @@ public:
     virtual void checkAllowed(int credibility) const;
     virtual bool isSuspect() const;
 };
+
+// Derived classes for specific character types
+
 class Victim : public Character
 {
 public:
@@ -221,6 +257,9 @@ public:
     void useTurn();
     int getTurnsUsed() const;
 };
+
+// Suspect class representing a suspect character in the game
+
 class Suspect : public Character
 {
 public:
@@ -236,6 +275,9 @@ public:
     BusinessRelations(const string& n, const string& r, const string& nat, char let, int pos, bool cul = false);
     virtual void display() const;
 };
+
+// Househelp class representing a house help character in the game
+
 class Househelp : public Suspect
 {
 public:
@@ -244,6 +286,9 @@ public:
     virtual void display() const;
     virtual void checkAllowed(int credibility) const;
 };
+
+// Closerelations class representing a character with close relations in the game
+
 class Closerelations : virtual public Suspect
 {
 public:
@@ -251,6 +296,9 @@ public:
     Closerelations(const string& n, const string& r, const string& nat, char let, int pos, bool cul = false);
     virtual void display() const;
 };
+
+// Partner class representing a business partner character in the game
+
 class Partner : public BusinessRelations
 {
 public:
@@ -259,6 +307,9 @@ public:
     virtual void display() const;
     virtual void checkAllowed(int credibility) const;
 };
+
+// PA class representing a cook in the game
+
 class Cook : public Househelp
 {
 public:
@@ -266,6 +317,9 @@ public:
     Cook(const string& n, const string& r, const string& nat, char let, int pos);
     virtual void display() const;
 };
+
+// Guard class representing a guard in the game
+
 class Guard : public Househelp
 {
 public:
@@ -273,6 +327,9 @@ public:
     Guard(const string& n, const string& r, const string& nat, char let, int pos);
     virtual void display() const;
 };
+
+// Servant class representing a servant in the game
+
 class Servant : public Househelp
 {
 public:
@@ -280,6 +337,9 @@ public:
     Servant(const string& n, const string& r, const string& nat, char let, int pos);
     virtual void display() const;
 };
+
+// Child class representing a child character in the game
+
 class Child : public Closerelations
 {
 private:
@@ -299,6 +359,9 @@ public:
     virtual void display() const;
     virtual void checkAllowed(int credibility) const;
 };
+
+// DynamicArray class template for dynamic array implementation
+
 template <class T>
 class DynamicArray
 {
@@ -398,6 +461,9 @@ public:
         size = 0;
     }
 };
+
+// TileRack class representing a rack of letter tiles for the detective
+
 class TileRack
 {
 private:
