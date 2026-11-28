@@ -776,37 +776,32 @@ void Scrabble::display() const
     cout << *this;
 }
 
+// Helper function to print a single row of tiles on the Scrabble board
+
+static void printBoardRow(ostream &out, const char *label, const Tile *row, int length)
+{
+    out << label;
+    for (int i = 0; i < length; i++)
+    {
+        if (row[i].filled)
+        {
+            out << '[' << row[i].letter << "] ";
+        }
+        else
+        {
+            out << "[ ] ";
+        }
+    }
+    out << endl;
+}
+
 // Overloaded operator<< to display the contents of the Scrabble board
 
 ostream &operator<<(ostream &out, const Scrabble &board)
 {
     out << "Scrabble Board:" << endl;
-    out << "Word 1: ";
-    for (int i = 0; i < WORD_ONE_LENGTH; i++)
-    {
-        if (board.row1[i].filled)
-        {
-            out << '[' << board.row1[i].letter << "] ";
-        }
-        else
-        {
-            out << "[ ] ";
-        }
-    }
-    out << endl;
-    out << "Word 2: ";
-    for (int i = 0; i < WORD_TWO_LENGTH; i++)
-    {
-        if (board.row2[i].filled)
-        {
-            out << '[' << board.row2[i].letter << "] ";
-        }
-        else
-        {
-            out << "[ ] ";
-        }
-    }
-    out << endl;
+    printBoardRow(out, "Word 1: ", board.row1, WORD_ONE_LENGTH);
+    printBoardRow(out, "Word 2: ", board.row2, WORD_TWO_LENGTH);
     return out;
 }
 
@@ -1820,6 +1815,22 @@ void GameEngine::endGame()
     clearScreen();
     state = Menu;
 }
+// Helper function to parse a penalty value (supporting optional leading '-') from rules.txt
+
+static int parseRulePenalty(const string& val, int fallback)
+{
+    string digits = val;
+    if (digits.length() > 1 && digits[0] == '-')
+    {
+        digits = digits.substr(1);
+    }
+    if (TextUtil::isAllDigits(digits))
+    {
+        return TextUtil::digitsToNumber(digits);
+    }
+    return fallback;
+}
+
 void GameEngine::loadRules()
 {
     maxTurns = DEFAULT_MAX_TURNS;
@@ -1888,41 +1899,11 @@ void GameEngine::loadRules()
             }
             else if (key == "Every_Wrong_Turn")
             {
-                if (val.length() > 1 && val[0] == '-')
-                {
-                    string rest = "";
-                    for (int i = 1; i < (int)val.length(); i++)
-                    {
-                        rest = rest + val[i];
-                    }
-                    if (TextUtil::isAllDigits(rest))
-                    {
-                        wrongTurnAmount = TextUtil::digitsToNumber(rest);
-                    }
-                }
-                else if (TextUtil::isAllDigits(val))
-                {
-                    wrongTurnAmount = TextUtil::digitsToNumber(val);
-                }
+                wrongTurnAmount = parseRulePenalty(val, wrongTurnAmount);
             }
             else if (key == "Every_Wrong_Word")
             {
-                if (val.length() > 1 && val[0] == '-')
-                {
-                    string rest = "";
-                    for (int i = 1; i < (int)val.length(); i++)
-                    {
-                        rest = rest + val[i];
-                    }
-                    if (TextUtil::isAllDigits(rest))
-                    {
-                        wrongWordAmount = TextUtil::digitsToNumber(rest);
-                    }
-                }
-                else if (TextUtil::isAllDigits(val))
-                {
-                    wrongWordAmount = TextUtil::digitsToNumber(val);
-                }
+                wrongWordAmount = parseRulePenalty(val, wrongWordAmount);
             }
             else if (key == "Win_Condition")
             {
