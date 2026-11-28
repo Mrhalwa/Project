@@ -1,4 +1,7 @@
 #include "heist.h"
+
+// Implementation of the Character class and its derived classes
+
 Character::Character(const string& n, const string& r, const string& nat, bool cul)
     : char_name(n), char_role(r), nationality(nat), is_culprit(cul),
       letter(' '), boardPos(0), interviewedFlag(false)
@@ -9,6 +12,9 @@ Character::Character(const string& n, const string& r, const string& nat, char l
       letter(let), boardPos(pos), interviewedFlag(false)
 {
 }
+
+//==============Implementation of the Character class methods==================
+
 Character::~Character()
 {
 }
@@ -52,6 +58,9 @@ bool Character::isInterviewed() const
 {
     return interviewedFlag;
 }
+
+// =================Implementation of the Clue structure=================
+
 Clue Character::interview()
 {
     interviewedFlag = true;
@@ -75,6 +84,9 @@ Clue Character::showClueAgain() const
     c.word = 2;
     return c;
 }
+
+//Implementation of different functions of character class
+
 void Character::checkAllowed(int) const
 {
 }
@@ -82,6 +94,9 @@ bool Character::isSuspect() const
 {
     return false;
 }
+
+// =================Implementation of the Victim class==================
+
 Victim::Victim(const string& n, const string& nat)
     : Character(n, "Victim", nat, false)
 {
@@ -90,6 +105,9 @@ Victim::Victim(const string& n, const string& r, const string& nat, char let, in
     : Character(n, r, nat, let, pos, false)
 {
 }
+
+// Display method for Victim class
+
 void Victim::display() const
 {
     cout << char_name << " (" << char_role << ") - " << (interviewedFlag ? "Interviewed" : "NOT Interviewed");
@@ -105,11 +123,17 @@ bool Victim::isSuspect() const
 {
     return false;
 }
+
+// =============Implementation of the Detective class==============
+
 Detective::Detective(const string& n, int start_cred)
     : Character(n, "Detective", "", false), cred(100), turnsUsed(0)
 {
     set_cred(start_cred);
 }
+
+//Displaying detective information and credibility
+
 void Detective::display() const
 {
     cout << "\n--- Detective Information ---" << endl;
@@ -136,6 +160,9 @@ void Detective::set_cred(int new_cred)
         cred = new_cred;
     }
 }
+
+//Implementation of credibility and turns used by detectice
+
 int Detective::getCredibility() const
 {
     return cred;
@@ -152,6 +179,9 @@ int Detective::getTurnsUsed() const
 {
     return turnsUsed;
 }
+
+// ===========Implementation of the Suspect class==========
+
 Suspect::Suspect(const string& n, const string& r, const string& nat, bool cul)
     : Character(n, r, nat, cul)
 {
@@ -168,6 +198,9 @@ bool Suspect::isSuspect() const
 {
     return true;
 }
+
+// ===========Implementation of the BusinessRelations class==========
+
 BusinessRelations::BusinessRelations(const string& n, const string& r, const string& nat, bool cul)
     : Suspect(n, r, nat, cul)
 {
@@ -184,6 +217,9 @@ Househelp::Househelp(const string& n, const string& r, const string& nat, bool c
     : Suspect(n, r, nat, cul)
 {
 }
+
+// ===========Implementation of the Househelp class==========
+
 Househelp::Househelp(const string& n, const string& r, const string& nat, char let, int pos, bool cul)
     : Suspect(n, r, nat, let, pos, cul)
 {
@@ -195,6 +231,9 @@ void Househelp::display() const
 void Househelp::checkAllowed(int) const
 {
 }
+
+// ===========Implementation of the Closerelations class==========
+
 Closerelations::Closerelations(const string& n, const string& r, const string& nat, bool cul)
     : Suspect(n, r, nat, cul)
 {
@@ -207,6 +246,9 @@ void Closerelations::display() const
 {
     cout << char_name << " (" << char_role << ") - " << (interviewedFlag ? "Interviewed" : "NOT Interviewed");
 }
+
+// ===========Implementation of the Partner class==========
+
 Partner::Partner(const string& n, const string& nat, bool cul)
     : Suspect(n, "Partner", nat, cul),
       BusinessRelations(n, "Partner", nat, cul)
@@ -228,6 +270,9 @@ void Partner::checkAllowed(int credibility) const
         throw InvalidActionException("Partners will only talk to you if your credibility is at least 50.");
     }
 }
+
+// ===========Implementation of the cook class==========
+
 Cook::Cook(const string& n, const string& nat, bool cul)
     : Househelp(n, "Cook", nat, cul)
 {
@@ -240,6 +285,10 @@ void Cook::display() const
 {
     cout << char_name << " (" << char_role << ") - " << (interviewedFlag ? "Interviewed" : "NOT Interviewed");
 }
+
+
+// ===========Implementation of the guard class==========
+
 Guard::Guard(const string& n, const string& nat, bool cul)
     : Househelp(n, "Guard", nat, cul)
 {
@@ -252,6 +301,10 @@ void Guard::display() const
 {
     cout << char_name << " (" << char_role << ") - " << (interviewedFlag ? "Interviewed" : "NOT Interviewed");
 }
+
+// ===========Implementation of the servant class==========
+
+
 Servant::Servant(const string& n, const string& nat, bool cul)
     : Househelp(n, "Servant", nat, cul)
 {
@@ -264,6 +317,9 @@ void Servant::display() const
 {
     cout << char_name << " (" << char_role << ") - " << (interviewedFlag ? "Interviewed" : "NOT Interviewed");
 }
+
+// ===========Implementation of the child class==========
+
 Child::Child(const string& n, const string& nat, bool cul, int childage)
     : Suspect(n, "Child", nat, cul),
       Closerelations(n, "Child", nat, cul),
@@ -291,6 +347,9 @@ void Child::checkAllowed(int credibility) const
         throw InvalidActionException("Ms. Celine will only talk to you if your credibility is at least 75.");
     }
 }
+
+// ===========Implementation of the PA class==========
+
 PA::PA(const string& n, const string& nat, bool cul)
     : Suspect(n, "PA", nat, cul),
       BusinessRelations(n, "PA", nat, cul),
@@ -307,6 +366,9 @@ void PA::display() const
 {
     cout << char_name << " (" << char_role << ") - " << (interviewedFlag ? "Interviewed" : "NOT Interviewed");
 }
+
+// Checking if the detective has enough credibility to interview the PA
+
 void PA::checkAllowed(int credibility) const
 {
     if (credibility < 35)
@@ -314,6 +376,7 @@ void PA::checkAllowed(int credibility) const
         throw InvalidActionException("Mr. Jad will only talk to you if your credibility is at least 35.");
     }
 }
+
 int stringLength(const char *text)
 {
     int count = 0;
@@ -358,6 +421,9 @@ bool sameTextIgnoreCase(const char *a, const char *b)
     }
     return a[i] == '\0' && b[i] == '\0';
 }
+
+// ===Implementation of the Clue and Location structures, and related functions===
+
 Clue makeClue(char letter, int word, int position)
 {
     Clue c;
@@ -384,6 +450,9 @@ Location makeLocation(const char *name, char letter, int word, int position)
     l.locSearchFlag = false;
     return l;
 }
+
+//using ostream to display the clue information
+
 ostream &operator<<(ostream &out, const Clue &clue)
 {
     out << "Letter " << (clue.letter != '_' && clue.letter != ' ' ? clue.letter : clue.clueLetter)
@@ -403,6 +472,9 @@ IncompleteWordException::IncompleteWordException(const char *text)
     : GameException(text)
 {
 }
+
+// ===========Implementation of the TileRack class==========
+
 TileRack::TileRack(int cap)
 {
     capacity = cap;
@@ -465,6 +537,9 @@ void TileRack::display() const
 {
     cout << *this;
 }
+
+// Overloaded operator<< to display the contents of the TileRack
+
 ostream &operator<<(ostream &out, const TileRack &rack)
 {
     if (rack.tiles.isEmpty())
@@ -482,6 +557,9 @@ ostream &operator<<(ostream &out, const TileRack &rack)
     }
     return out;
 }
+
+// ===========Implementation of the Scrabble class==========
+
 Scrabble::Scrabble()
 {
     row1 = new Tile[WORD_ONE_LENGTH];
@@ -576,6 +654,9 @@ int Scrabble::rowLength(int word) const
     }
     throw InvalidPlacementException("Word number must be 1 or 2!");
 }
+
+// Implementation of the Scrabble class methods for placing clues, checking completion, and forming words
+
 void Scrabble::place(const Clue &clue)
 {
     int w = (clue.word != 0 ? clue.word : (clue.clueRow == Word_1 ? 1 : 2));
@@ -694,6 +775,9 @@ void Scrabble::display() const
 {
     cout << *this;
 }
+
+// Overloaded operator<< to display the contents of the Scrabble board
+
 ostream &operator<<(ostream &out, const Scrabble &board)
 {
     out << "Scrabble Board:" << endl;
@@ -725,6 +809,9 @@ ostream &operator<<(ostream &out, const Scrabble &board)
     out << endl;
     return out;
 }
+
+// ===========Implementation of the Cottage class==========
+
 Cottage::Cottage()
 {
 }
