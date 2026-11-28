@@ -3,3 +3,5 @@ Agent_007|LOSE|0|05|Servant|11-10-26
 Insp.Jamshad|WIN|35|07|Partner_2|10-10-26
 Mrhalwa|WIN|65|07|Guard|24-11-26
 Mrhalwa|WIN|90|07|PA|24-11-26
+gg|WIN|100|06|Guard|29-11-26
+er|LOSE|0|25|Child|29-11-26
